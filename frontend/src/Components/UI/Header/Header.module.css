@@ -1,0 +1,45 @@
+.myHeader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.header-list {
+    list-style-type: none;
+    display: flex;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    width: 450px;
+    justify-content: space-between;
+    align-self: center;
+}
+
+hr {
+    margin-bottom: 0px;
+}
+
+.menuItem:hover {
+    background-color: #aaa;
+}
+
+.menuItem {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.homeImg {
+    size: 360px;
+    height: 110px;
+    width: 150px;
+}
+
+.profile {
+    display: flex;
+    gap: 25px;
+    width: 150px;
+}

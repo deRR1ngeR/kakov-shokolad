@@ -1,0 +1,51 @@
+.topDiv h1 {
+  width: 100%;
+  top: 50%;
+  text-align: center;
+  position: absolute;
+  color: white;
+}
+
+.catalog_section {
+  margin-top: 35px;
+}
+
+.catalog_section h2 {
+  text-align: center;
+}
+
+.topDiv {
+  position: relative;
+  margin-top: 0px;
+  height: 450px;
+  align-items: center;
+  justify-content: center;
+}
+
+.topDiv img {
+  filter: brightness(80%);
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cardGroup {
+  width: 1000px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.card {
+  width: 18rem;
+  margin-top: 25px;
+}
+
+.cardImg {
+  border-radius: 3px;
+  object-fit: contain;
+}

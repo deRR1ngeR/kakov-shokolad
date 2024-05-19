@@ -1,0 +1,112 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table user {
+  id Int [pk, increment]
+  name String [not null]
+  email String [unique, not null]
+  password String [not null]
+  phoneNumber String [not null]
+  role Role [not null]
+  isBlocked Boolean [not null]
+  purchasedSets Int [not null]
+  orders order [not null]
+  Cart cart
+}
+
+Table order {
+  id Int [pk, increment]
+  user user [not null]
+  userId Int [not null]
+  creationDate DateTime [not null]
+  dateOfOrder DateTime [not null]
+  deliveryMethod DeliveryMethod [not null]
+  orderStatus Boolean [not null]
+  adress String
+  totalAmount Float [not null]
+  comment String
+  product OrderProduct [not null]
+}
+
+Table OrderProduct {
+  id Int [pk, increment]
+  order order [not null]
+  orderId Int [not null]
+  product product [not null]
+  productId Int [not null]
+  description String
+  count Int [not null]
+}
+
+Table cart_product {
+  cart cart [not null]
+  cartId Int [not null]
+  product product [not null]
+  productId Int [not null]
+  description String
+  count Int [not null]
+
+  indexes {
+    (cartId, productId) [pk]
+  }
+}
+
+Table cart {
+  id Int [pk, increment]
+  userId Int [unique, not null]
+  user user [not null]
+  product cart_product [not null]
+}
+
+Table product {
+  id Int [pk, increment]
+  name String [not null]
+  description String [not null]
+  price Float [not null]
+  main_image String [not null]
+  cart cart_product [not null]
+  order OrderProduct [not null]
+  ProductImages product_images [not null]
+}
+
+Table product_images {
+  id Int [pk, increment]
+  productImage String [not null]
+  product product [not null]
+  product_id Int [not null]
+}
+
+Table coupon {
+  id Int [pk, increment]
+  maxNumberOfActivations Int [not null]
+  numberOfActivations Int [not null]
+  code String [unique, not null]
+  discountAmount Int [not null]
+  isActive Boolean [not null]
+  expirationDate DateTime [not null]
+}
+
+Enum Role {
+  USER
+  ADMIN
+}
+
+Enum DeliveryMethod {
+  PICKUP
+  DELIVERY
+}
+
+Ref: order.userId > user.id [delete: Cascade]
+
+Ref: OrderProduct.orderId > order.id [delete: Cascade]
+
+Ref: OrderProduct.productId > product.id
+
+Ref: cart_product.cartId > cart.id [delete: Cascade]
+
+Ref: cart_product.productId > product.id
+
+Ref: cart.userId - user.id [delete: Cascade]
+
+Ref: product_images.product_id > product.id [delete: Cascade]

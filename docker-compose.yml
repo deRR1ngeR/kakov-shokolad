@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+#   server:
+#     build:
+#       context: ./backend
+#       dockerfile: Dockerfile
+#     ports:
+#       - 3000:3000
+#     networks:
+#       - mynetwork
+#     depends_on:
+#       - db
+    
+#   client:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     ports:
+#       - 3333:5173
+#     networks:
+#       - mynetwork
+#     depends_on:
+#       - server
+  db:
+    container_name: db
+    image: postgres:14.0-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: kakov_shokolad
+    volumes:
+    - ./pgdata:/var/lib/postgresql/data
+    ports:
+    - "5433:5432"
+#     networks:
+#       - mynetwork
+  
+# networks:
+#   mynetwork:
+#     driver: bridge

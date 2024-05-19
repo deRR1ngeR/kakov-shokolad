@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int     @id @default(autoincrement())
+  name          String
+  email         String  @unique
+  password      String
+  phoneNumber   String
+  role          Role    @map("is_admin")
+  isBlocked     Boolean @map("is_blocked")
+  purchasedSets Int     @map("purchased_sets")
+  orders        Order[]
+  Cart          Cart?
+
+  @@map("user")
+}
+
+model Order {
+  id             Int            @id @default(autoincrement())
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         Int            @map("user_id")
+  creationDate   DateTime       @map("creation_date")
+  dateOfOrder    DateTime       @map("date_of_order")
+  deliveryMethod DeliveryMethod @map("delivery_method")
+  orderStatus    Boolean        @map("order_status")
+  adress         String?
+  totalAmount    Float          @map("total_amount")
+  comment        String?
+  product OrderProduct[]
+
+  @@map("order")
+}
+
+model OrderProduct {
+  id Int @id @default(autoincrement())
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId Int @map("order_id")
+  product Product @relation(fields: [productId], references: [id])
+  productId Int @map("product_id")
+  description String?
+  count Int
+
+}
+
+model CartProduct {
+  cart        Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId      Int     @map("cart_id")
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId   Int     @map("product_id")
+  description String?
+  count       Int
+
+  @@id([cartId, productId])
+  @@map("cart_product")
+}
+
+model Cart {
+  id      Int           @id @default(autoincrement())
+  userId  Int           @unique
+  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product CartProduct[]
+
+  @@map("cart")
+}
+
+model Product {
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String
+  price         Float
+  main_image    String
+  isActivated   Boolean        @default(true)
+  cart          CartProduct[]
+  order         OrderProduct[]
+  ProductImages ProductImage[]
+
+  @@map("product")
+}
+
+model ProductImage {
+  id           Int     @id @default(autoincrement())
+  productImage String  @map("product_image")
+  product      Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product_id   Int
+
+  @@map("product_images")
+}
+
+model Coupon {
+  id             Int @id @default(autoincrement())
+  maxNumberOfActivations       Int @map("max_number_of_activations")
+  numberOfActivations Int @map("number_of_activations")
+  code           String @unique
+  discountAmount Int @map("discount_amount")
+  isActive       Boolean @map("is_active")
+  expirationDate DateTime @map("expiration_date")
+
+  @@map("coupon")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum DeliveryMethod {
+  PICKUP
+  DELIVERY
+}
